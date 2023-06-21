@@ -1,0 +1,35 @@
+.photograph-header {
+    display: flex;
+    align-items: center;
+}
+
+article {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    width: 100%;
+}
+
+article img {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.divInfo h2 {
+    color: #DB8876;
+    font-size: 6em;
+    margin: 0;
+}
+
+.country {
+    color: #901C1C;
+    font-size: 1.5em;
+}
+
+.tag {
+    font-size: 1.5em;
+    color: gray
+}
