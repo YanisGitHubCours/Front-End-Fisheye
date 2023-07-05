@@ -52,32 +52,72 @@ async function DisplayPhotos(){
     switch(selectedValue) {
         case 'champ1':
             var filteredPhotos = data.photos;
-            filteredPhotos.sort((a, b) => b.likes - a.likes);
+            console.log(filteredPhotos)
+            await filteredPhotos.sort((a, b) => b.likes - a.likes)
             for (var i = 0; i < filteredPhotos.length; i++) {
+                //photo
                 var div = document.createElement('div');
-                div.className = 'photo';
+                div.className = 'photo' + i;
                 div.innerHTML = '<img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '" style="width: 50%;">';
+                //Button
+                const buttonLike = document.createElement('button')
+                buttonLike.addEventListener('onclick',UpOrDownLike(filteredPhotos[i].likes))
+                buttonLike.textContent = "Like"
+                //Nb Like
+                const nbLikes = document.createElement('p')
+                nbLikes.textContent = filteredPhotos[i].likes
+                //add to the div photo
+                div.appendChild(nbLikes)
+                div.appendChild(buttonLike)
+                //add to the main div
                 container.appendChild(div);
             }
             break;
         case 'champ2':
             var filteredPhotos = data.photos;
-            filteredPhotos.sort((a, b) => new Date(b.date) - new Date(a.date))
+            await filteredPhotos.sort((a, b) => new Date(a.date)- new Date(b.date))
             for (var i = 0; i < filteredPhotos.length; i++) {
                 var div = document.createElement('div');
-                div.className = 'photo';
+                div.className = 'photo' + i;
                 div.innerHTML = '<img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '" style="width: 50%;">';
+                 //Button
+                 const buttonLike = document.createElement('button')
+                 buttonLike.addEventListener('onclick',UpOrDownLike(filteredPhotos[i].likes))
+                 buttonLike.textContent = "Like"
+                 //Nb Like
+                 const nbLikes = document.createElement('p')
+                 nbLikes.textContent = filteredPhotos[i].likes
+                 //add to the div photo
+                 div.appendChild(nbLikes)
+                 div.appendChild(buttonLike)
                 container.appendChild(div);
             }
             break;
         case 'champ3':
             var filteredPhotos = data.photos;
-            filteredPhotos.sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()))
+            await filteredPhotos.sort((a, b) => {
+                if (a.title < b.title) {
+                    return -1;
+                }
+                if (a.title > b.title) {
+                    return 1;
+                }
+                return 0;
+            });
             for (var i = 0; i < filteredPhotos.length; i++) {
-                console.log(filteredPhotos[i].image)
                 var div = document.createElement('div');
-                div.className = 'photo';
+                div.className = 'photo' + i;
                 div.innerHTML = '<img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '" style="width: 50%;">';
+                 //Button
+                 const buttonLike = document.createElement('button')
+                 buttonLike.addEventListener('onclick',UpOrDownLike(filteredPhotos[i].likes))
+                 buttonLike.textContent = "Like"
+                 //Nb Like
+                 const nbLikes = document.createElement('p')
+                 nbLikes.textContent = filteredPhotos[i].likes
+                 //add to the div photo
+                 div.appendChild(nbLikes)
+                 div.appendChild(buttonLike)
                 container.appendChild(div);
             }
             break;
@@ -89,3 +129,7 @@ async function DisplayPhotos(){
 document.addEventListener('DOMContentLoaded', function() {
     DisplayPhotos();
 });
+
+function UpOrDownLike(likes){
+    likes = likes + 1
+}
