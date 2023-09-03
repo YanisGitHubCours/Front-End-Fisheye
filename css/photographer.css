@@ -1,3 +1,8 @@
+body {
+    font-family: "DM Sans", sans-serif;
+    margin: 0;
+}
+
 #contact_modal {
     display: none;
 }
@@ -73,4 +78,95 @@ form input {
     height: 68px;
     border: none;
     border-radius: 5px;
+}
+
+
+.divFilter {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 20px 100px;
+}
+
+.divFilter label {
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 10px;
+    letter-spacing: 1px;
+}
+
+.divFilter select {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    padding: 11px;
+    height: 50px;
+    border: none;
+    background-color: #901C1C;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.divFilter select option {
+    font-weight: bold;
+    color: white;
+    border: none;
+    background-color: #901C1C;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#image-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 0 100px 50px 100px;
+}
+
+.cardMedia {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 0 0 30px 0;
+}
+
+.cardMedia img {
+    height: 300px;
+    width: 300px;
+    object-fit: cover;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cardMedia video {
+    height: 300px;
+    width: 300px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cardMedia .legendMedia {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+}
+
+.cardMedia .legendMedia h3 {
+    color: #901C1C;
+    font-size: 25px;
+    font-weight: lighter;
+}
+
+.cardMedia .legendMedia p {
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.cardMedia .legendMedia p::after {
+    content: "\f004";
+    margin-left: 7px;
+    font-family: "Font Awesome 5 free";
+    font-weight: 900;
+    color: #901C1C;
 }

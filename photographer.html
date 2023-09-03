@@ -3,6 +3,7 @@
   <head>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
     <link href="css/one_photographer.css" rel="stylesheet" type="text/css" />
+    <script src="https://kit.fontawesome.com/2f567fdf59.js" crossorigin="anonymous"></script>
     <meta charset="utf-8">
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
@@ -16,16 +17,14 @@
       <div class="photograph-header">
         <!--<button class="contact_button" onclick="displayModal()">Contactez-moi</button>-->
       </div>
-      <div>
-        <p>Trier par</p>
-        <select id="filter" onchange="DisplayPhotos()">
-            <option value="champ1">Popularité</option>
-            <option value="champ2">Date</option>
-            <option value="champ3">Titre</option>
-        </select>
-    </div>
+      <div class="divFilter">
+          <label for="filter">Trier par</label>
+          <select id="filter" onchange="DisplayPhotos()">
+          </select>
+      </div>
       <div id="image-container">
-        
+      </div>
+      <div id="TotalLikes">
       </div>
     </main>
     <div id="contact_modal">
