@@ -33,3 +33,27 @@ article img {
     font-size: 1.5em;
     color: gray
 }
+
+#TotalLikes {
+    display: flex;
+    justify-content: space-evenly;
+    position: fixed;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 5px 30px;
+    background-color: #DB8876;
+    bottom: 0;
+    right: 50px;
+    border-radius: 5px 5px 0 0;
+}
+
+.likes {
+    padding-right: 200px;
+}
+
+.likes::after {
+    content: "\f004";
+    margin-left: 7px;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}

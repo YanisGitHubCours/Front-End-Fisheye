@@ -1,4 +1,3 @@
-
 function onePhotographerFactory(data) {
     const { name, portrait, city,tagline, country} = data.photographer;
 
@@ -25,7 +24,7 @@ function onePhotographerFactory(data) {
 
         const buttonContact = document.createElement('button')
         buttonContact.setAttribute('class','contact_button')
-        buttonContact.addEventListener('onclick',displayModal())
+        buttonContact.addEventListener('onclick', displayModal())
         buttonContact.textContent = "Contactez-moi"
 
         divInfo.appendChild(h2);
@@ -68,7 +67,8 @@ async function DisplayPhotos(){
                     div.className = "cardMedia"
                     div.id = 'photo' + i;
                     if(filteredPhotos[i].image){
-                        div.innerHTML = '<img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"">';
+                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\')"><img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
+
 
                     }else if(filteredPhotos[i].video){
                         div.innerHTML = '<video controls><source src="/assets/photos/'+firstName + '/' + filteredPhotos[i].video + '" type="video/mp4">Votre navigateur ne supporte pas les vidéos mp4.</video>'
@@ -79,6 +79,7 @@ async function DisplayPhotos(){
                     // Number of Likes
                     const nbLikes = document.createElement('p');
                     nbLikes.textContent = filteredPhotos[i].likes;
+                    
                     nbLikes.addEventListener('click', UpOrDownLike(filteredPhotos[i], nbLikes, filteredPhotos.length));
                 
                     var div2 = document.createElement('div');
@@ -100,8 +101,7 @@ async function DisplayPhotos(){
                     div.className = "cardMedia"
                     div.id = 'photo' + i;
                     if(filteredPhotos[i].image){
-                        div.innerHTML = '<a><img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '""></a>';
-
+                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\')"><img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
                     }else if(filteredPhotos[i].video){
                         div.innerHTML = '<video controls><source src="/assets/photos/'+firstName + '/' + filteredPhotos[i].video + '" type="video/mp4">Votre navigateur ne supporte pas les vidéos mp4.</video>'
                     }
@@ -140,7 +140,7 @@ async function DisplayPhotos(){
                     div.className = "cardMedia"
                     div.id = 'photo' + i;
                     if(filteredPhotos[i].image){
-                        div.innerHTML = '<a><img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '""></a>';
+                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\')"><img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
 
                     }else if(filteredPhotos[i].video){
                         div.innerHTML = '<a><video controls><source src="/assets/photos/'+firstName + '/' + filteredPhotos[i].video + '" type="video/mp4">Votre navigateur ne supporte pas les vidéos mp4.</video></a>'
@@ -211,14 +211,32 @@ function generateOptions() {
 }
 
 async function TotalLike(){
-    console.log(totalLikes)
+    
 
     var container = document.getElementById('TotalLikes');
     container.innerHTML = '';
     var pLike = document.createElement('p');
-    pLike.textContent = totalLikes;
+    var pPrice = document.createElement('p')
+    pLike.classList.add("likes")
+    pLike.textContent = totalLikes
+    pPrice.textContent = "300€ / jour"
  
     container.appendChild(pLike);
+    container.appendChild(pPrice)
+}
+
+async function displayPhotoCarousel(photo, firstname){
+    const carouClose = document.getElementById("closeCarrousel");
+    carouClose.onclick = CloseCaroussel;
+    const carou = document.getElementById("carousel");
+    const carouImage = document.getElementById("carousel-item")
+    carouImage.src = "/assets/photos/" + firstname + "/" + photo;
+    carou.style.display = "block"
+}
+
+async function CloseCaroussel(){
+    const carou = document.getElementById("carousel");
+    carou.style.display = "none"
 }
 
 generateOptions();
