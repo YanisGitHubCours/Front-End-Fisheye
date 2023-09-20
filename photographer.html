@@ -3,6 +3,7 @@
   <head>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
     <link href="css/one_photographer.css" rel="stylesheet" type="text/css" />
+    <link href="css/photographer.css" rel="stylesheet" type="text/css" />
     <script src="https://kit.fontawesome.com/2f567fdf59.js" crossorigin="anonymous"></script>
     <meta charset="utf-8">
     <link rel="icon" type="image/png" href="assets/favicon.png">
@@ -41,13 +42,29 @@
           <h2 id="textCM">Contactez-moi</h2>
           <img src="assets/icons/close.svg" onclick="closeModal()" />
         </header>
-				<form>
-					<div>
-						<label>Prénom</label>
-						<input />
-					</div>
-          <button class="contact_button">Envoyer</button>
-				</form>
+        <form id="contact-form">
+          <div>
+              <label for="prenom">Prénom:</label>
+              <input type="text" id="prenom" name="prenom" aria-label="Votre prénom">
+          </div>
+          
+          <div>
+              <label for="nom">Nom:</label>
+              <input type="text" id="nom" name="nom" aria-label="Votre nom">
+          </div>
+          
+          <div>
+              <label for="email">E-mail:</label>
+              <input type="email" id="email" name="email" aria-label="Votre adresse mail">
+          </div>
+          
+          <div>
+              <label for="message">Votre message:</label>
+              <input id="message" name="message" aria-label="Votre message"/>
+          </div>
+          
+          <button class="contact_button" type="submit" aria-label="Envoyer le formulaire">Envoyer</button>
+      </form>
 			</div>
 		</div>
     <script src="/scripts/pages/photographer.js"></script>

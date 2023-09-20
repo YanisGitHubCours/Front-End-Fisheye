@@ -24,7 +24,9 @@ function onePhotographerFactory(data) {
 
         const buttonContact = document.createElement('button')
         buttonContact.setAttribute('class','contact_button')
-        buttonContact.addEventListener('onclick', displayModal())
+        buttonContact.onclick = function() {
+            displayModal();
+        };
         buttonContact.textContent = "Contactez-moi"
 
         divInfo.appendChild(h2);
@@ -67,11 +69,11 @@ async function DisplayPhotos(){
                     div.className = "cardMedia"
                     div.id = 'photo' + i;
                     if(filteredPhotos[i].image){
-                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\')"><img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
+                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\', \'' + i + '\')"><img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
 
 
                     }else if(filteredPhotos[i].video){
-                        div.innerHTML = '<video controls><source src="/assets/photos/'+firstName + '/' + filteredPhotos[i].video + '" type="video/mp4">Votre navigateur ne supporte pas les vidéos mp4.</video>'
+                        div.innerHTML = '<video onclick="displayPhotoCarousel(\'' + filteredPhotos[i].video + '\', \'' + firstName + '\')"><source src="/assets/photos/'+firstName + '/' + filteredPhotos[i].video + '" type="video/mp4">Votre navigateur ne supporte pas les vidéos mp4.</video>'
                     }
                     //Name
                     const name = document.createElement('h3');
@@ -101,9 +103,9 @@ async function DisplayPhotos(){
                     div.className = "cardMedia"
                     div.id = 'photo' + i;
                     if(filteredPhotos[i].image){
-                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\')"><img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
+                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\', \'' + i + '\')><img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
                     }else if(filteredPhotos[i].video){
-                        div.innerHTML = '<video controls><source src="/assets/photos/'+firstName + '/' + filteredPhotos[i].video + '" type="video/mp4">Votre navigateur ne supporte pas les vidéos mp4.</video>'
+                        div.innerHTML = '<video onclick="displayPhotoCarousel(\'' + filteredPhotos[i].video + '\', \'' + firstName + '\')"><source src="/assets/photos/'+firstName + '/' + filteredPhotos[i].video + '" type="video/mp4">Votre navigateur ne supporte pas les vidéos mp4.</video>'
                     }
                  //Name
                  const name = document.createElement('h3');
@@ -140,10 +142,10 @@ async function DisplayPhotos(){
                     div.className = "cardMedia"
                     div.id = 'photo' + i;
                     if(filteredPhotos[i].image){
-                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\')"><img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
+                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\', \'' + i + '\')><img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
 
                     }else if(filteredPhotos[i].video){
-                        div.innerHTML = '<a><video controls><source src="/assets/photos/'+firstName + '/' + filteredPhotos[i].video + '" type="video/mp4">Votre navigateur ne supporte pas les vidéos mp4.</video></a>'
+                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].video + '\', \'' + firstName + '\')"><video controls><source src="/assets/photos/'+firstName + '/' + filteredPhotos[i].video + '" type="video/mp4">Votre navigateur ne supporte pas les vidéos mp4.</video></a>'
                     }
                     //Name
                     const name = document.createElement('h3');
@@ -225,13 +227,142 @@ async function TotalLike(){
     container.appendChild(pPrice)
 }
 
-async function displayPhotoCarousel(photo, firstname){
+async function displayPhotoCarousel(photo, firstname, id){
     const carouClose = document.getElementById("closeCarrousel");
     carouClose.onclick = CloseCaroussel;
     const carou = document.getElementById("carousel");
     const carouImage = document.getElementById("carousel-item")
     carouImage.src = "/assets/photos/" + firstname + "/" + photo;
     carou.style.display = "block"
+
+    //Next
+    const nextCarou = document.getElementById("next")
+    nextCarou.onclick = function() {
+        nextphotocarousel(id, carouImage);
+    };
+    //Back
+    const backCarou = document.getElementById("back")
+    backCarou.onclick=backphotocarousel(id)
+}
+
+async function GetPhotoWithId(id, value) {
+    console.log(id)
+    const idInt = parseInt(id);
+    if (value == "next") {
+        const newId = idInt + 1
+        console.log(newId)
+        const idPhoto = 'photo' + newId;
+        const getCurrentPhotoId = document.getElementById(idPhoto);
+
+        if (getCurrentPhotoId) {
+            const htmlContent = getCurrentPhotoId.innerHTML;
+            const imgElement = document.createElement('div');
+            imgElement.innerHTML = htmlContent;
+            const imgSrc = imgElement.querySelector('img').getAttribute('src');
+
+            if (imgSrc) {
+                console.log("next:",imgSrc)
+                return imgSrc; // Return the src attribute value
+            } else {
+                console.log("src attribute not found");
+            }
+        } else {
+            console.log("Element not found");
+        }
+    } else {
+        if (idInt - 1 < 0) {
+            // Handle the case when idInt - 1 is less than 0, if needed
+            return null; // Return null or handle it as appropriate
+        } else {
+            const idPhoto = 'photo' + (idInt - 1);
+            const getCurrentPhotoId = document.getElementById(idPhoto);
+
+            if (getCurrentPhotoId) {
+                const htmlContent = getCurrentPhotoId.innerHTML;
+                const imgElement = document.createElement('div');
+                imgElement.innerHTML = htmlContent;
+                const imgSrc = imgElement.querySelector('img').getAttribute('src');
+
+                if (imgSrc) {
+                    return imgSrc; // Return the src attribute value
+                } else {
+                    console.log("src attribute not found");
+                }
+            } else {
+                console.log("Element not found");
+            }
+        }
+    }
+}
+
+async function nextphotocarousel(id, carouImage) {
+    const idPhoto = 'photo' + id;
+   /* const getCurrentPhotoId = document.getElementById(idPhoto);
+    const htmlContent = getCurrentPhotoId.innerHTML;
+
+    // Create a temporary element to parse the HTML
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = htmlContent;
+*/
+    // Call function to get next image
+    const newPhoto = await GetPhotoWithId(id, "next");
+    const newPhotoWithoutSlash = newPhoto.startsWith('/') ? newPhoto.substring(1) : newPhoto;
+    carouImage.src = "http://127.0.0.1:5500/" + newPhotoWithoutSlash; // Replace with your desired image source
+    // Find the <img> element inside the temporary element
+   // const imgElement = tempElement.querySelector('img');
+/*
+    if (imgElement) {
+        // Change the src attribute of the <img> element
+        console.log("Current imgElement.src:", imgElement.src);
+        console.log("New Photo:", newPhoto);
+
+        // Remove the leading slash from newPhoto if it exists
+        const newPhotoWithoutSlash = newPhoto.startsWith('/') ? newPhoto.substring(1) : newPhoto;
+        imgElement.src = "http://127.0.0.1:5500/" + newPhotoWithoutSlash; // Replace with your desired image source
+        console.log("Updated imgElement.src:", imgElement.src);
+    }
+
+    // Update the innerHTML of the original with modified content
+    getCurrentPhotoId.innerHTML = tempElement.innerHTML;
+
+    // Remove the temporary element
+    tempElement.remove();
+*/}
+
+
+
+async function backphotocarousel(){
+    const idPhoto = 'photo' + id;
+    /* const getCurrentPhotoId = document.getElementById(idPhoto);
+     const htmlContent = getCurrentPhotoId.innerHTML;
+ 
+     // Create a temporary element to parse the HTML
+     const tempElement = document.createElement('div');
+     tempElement.innerHTML = htmlContent;
+ */
+     // Call function to get next image
+     const newPhoto = await GetPhotoWithId(id, "back");
+     const newPhotoWithoutSlash = newPhoto.startsWith('/') ? newPhoto.substring(1) : newPhoto;
+     carouImage.src = "http://127.0.0.1:5500/" + newPhotoWithoutSlash; // Replace with your desired image source
+     // Find the <img> element inside the temporary element
+    // const imgElement = tempElement.querySelector('img');
+ /*
+     if (imgElement) {
+         // Change the src attribute of the <img> element
+         console.log("Current imgElement.src:", imgElement.src);
+         console.log("New Photo:", newPhoto);
+ 
+         // Remove the leading slash from newPhoto if it exists
+         const newPhotoWithoutSlash = newPhoto.startsWith('/') ? newPhoto.substring(1) : newPhoto;
+         imgElement.src = "http://127.0.0.1:5500/" + newPhotoWithoutSlash; // Replace with your desired image source
+         console.log("Updated imgElement.src:", imgElement.src);
+     }
+ 
+     // Update the innerHTML of the original with modified content
+     getCurrentPhotoId.innerHTML = tempElement.innerHTML;
+ 
+     // Remove the temporary element
+     tempElement.remove();*/
 }
 
 async function CloseCaroussel(){
