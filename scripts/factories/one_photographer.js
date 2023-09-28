@@ -225,34 +225,43 @@ async function TotalLike(){
     container.appendChild(pPrice)
 }
 
-async function displayPhotoCarousel(photo, firstname,id) {
+async function displayPhotoCarousel(photo, firstname, id) {
+    console.log("displayPhotoCarousel called with photo:", photo);
     const carouClose = document.getElementById("closeCarrousel");
     carouClose.onclick = CloseCaroussel;
-    
+
     const carou = document.getElementById("carousel");
     const carouImage = document.getElementById("carousel-item");
+    const carouVideo = document.getElementById("carousel-item-video");
+
     if (photo.endsWith(".mp4")) {
+        carouVideo.src = "/assets/photos/" + firstname + "/" + photo;
+        carouVideo.style.display = "block"; // Show video element
+        carouImage.style.display = "none"; // Hide image element
+    } else {
         carouImage.src = "/assets/photos/" + firstname + "/" + photo;
-    }else {
-        carouImage.src = "/assets/photos/" + firstname + "/" + photo;
+        carouImage.style.display = "block"; // Show image element
+        carouVideo.style.display = "none"; // Hide video element
     }
+
     carou.style.display = "block";
 
     // Next
     const nextCarou = document.getElementById("next");
     const backCarou = document.getElementById("back");
 
-
     nextCarou.onclick = function () {
-        nextphotocarousel(id, carouImage,firstname);
+        nextphotocarousel(id, carouImage, firstname, carouVideo);
     };
-    
+
     backCarou.onclick = function () {
-        backphotocarousel(id, carouImage,firstname);
+        backphotocarousel(id, carouImage, firstname, carouVideo);
     };
 }
+
 let currentId = 0;
-function nextphotocarousel(id, carouImage, firstname) {
+
+function nextphotocarousel(id, carouImage, firstname, carouVideo) {
     // Convert 'id' to a number
     id = parseInt(id);
 
@@ -278,13 +287,17 @@ function nextphotocarousel(id, carouImage, firstname) {
 
         // Update the 'src' attribute of the carousel image
         carouImage.src = imgSrc;
+
+        // Show the image element and hide the video element
+        carouImage.style.display = "block";
+        carouVideo.style.display = "none";
     } else {
-        currentId = 0
+        currentId = 0;
         console.log("No more images found.");
     }
 }
 
-function backphotocarousel(id, carouImage, firstname) {
+function backphotocarousel(id, carouImage, firstname, carouVideo) {
     // Convert 'id' to a number
     id = parseInt(id);
 
@@ -310,8 +323,12 @@ function backphotocarousel(id, carouImage, firstname) {
 
         // Update the 'src' attribute of the carousel image
         carouImage.src = imgSrc;
+
+        // Show the image element and hide the video element
+        carouImage.style.display = "block";
+        carouVideo.style.display = "none";
     } else {
-        currentId = 0
+        currentId = 0;
         console.log("No more images found.");
     }
 }
