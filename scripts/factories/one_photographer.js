@@ -54,20 +54,24 @@ async function DisplayPhotos(){
     container.innerHTML = '';
     var filteredPhotos = data.photos;
 
-    filteredPhotos.forEach(photo => {
-        photo.userHasLiked = false;
-        totalLikes += photo.likes;
-    });
+
     
-    TotalLike()
+    
 
     switch(selectedValue) {
         case 'champ1':
+            totalLikes = 0;
+            filteredPhotos.forEach(photo => {
+                photo.userHasLiked = false;
+                totalLikes += photo.likes;
+            });
+            TotalLike()
             await filteredPhotos.sort((a, b) => b.likes - a.likes)
             for (var i = 0; i < filteredPhotos.length; i++) {
                     var div = document.createElement('div');
                     div.className = "cardMedia"
                     div.id = 'photo' + i;
+                    div.setAttribute('tabindex', i+1);
                     if(filteredPhotos[i].image){
                         div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\', \'' + i + '\')"><img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
                     }else if(filteredPhotos[i].video){
@@ -76,6 +80,7 @@ async function DisplayPhotos(){
                     //Name
                     const name = document.createElement('h3');
                     name.textContent = filteredPhotos[i].title
+                    div.setAttribute('aria-label', filteredPhotos[i].title)
                     // Number of Likes
                     const nbLikes = document.createElement('p');
                     nbLikes.textContent = filteredPhotos[i].likes;
@@ -93,21 +98,28 @@ async function DisplayPhotos(){
                 }
             break;
         case 'champ2':
-
+            totalLikes = 0;
+            filteredPhotos.forEach(photo => {
+                photo.userHasLiked = false;
+                totalLikes += photo.likes;
+            });
+            TotalLike()
             await filteredPhotos.sort((a, b) => new Date(a.date)- new Date(b.date))
             for (var i = 0; i < filteredPhotos.length; i++) {
             
                     var div = document.createElement('div');
                     div.className = "cardMedia"
                     div.id = 'photo' + i;
+                    div.setAttribute('tabindex', i+1);
                     if(filteredPhotos[i].image){
                         div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\', \'' + i + '\')"><img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
                     }else if(filteredPhotos[i].video){
-                        div.innerHTML = '<video onclick="displayPhotoCarousel(\'' + filteredPhotos[i].video + '\', \'' + firstName + '\',\'' + i + '\')"><source src="/assets/photos/'+firstName + '/' + filteredPhotos[i].video + '" type="video/mp4">Votre navigateur ne supporte pas les vidéos mp4.</video>'
+                        div.innerHTML = '<video onclick="displayPhotoCarousel(\'' + filteredPhotos[i].video + '\', \'' + firstName + '\', \'' + i + '\')"><source src="/assets/photos/'+firstName + '/' + filteredPhotos[i].video + '" type="video/mp4">Votre navigateur ne supporte pas les vidéos mp4.</video>'
                     }
                  //Name
                  const name = document.createElement('h3');
                  name.textContent = filteredPhotos[i].title
+                 div.setAttribute('aria-label', filteredPhotos[i].title)
                     // Number of Likes
                     const nbLikes = document.createElement('p');
                     nbLikes.textContent = filteredPhotos[i].likes;
@@ -125,6 +137,12 @@ async function DisplayPhotos(){
             }
             break;
         case 'champ3':
+            totalLikes = 0;
+            filteredPhotos.forEach(photo => {
+                photo.userHasLiked = false;
+                totalLikes += photo.likes;
+            });
+            TotalLike()
             await filteredPhotos.sort((a, b) => {
                 if (a.title < b.title) {
                     return -1;
@@ -139,15 +157,17 @@ async function DisplayPhotos(){
                     var div = document.createElement('div');
                     div.className = "cardMedia"
                     div.id = 'photo' + i;
+                    div.setAttribute('tabindex', i+1);
                     if(filteredPhotos[i].image){
                         div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\',\'' + i + '\')"><img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
 
                     }else if(filteredPhotos[i].video){
-                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].video + '\', \'' + firstName + '\', \'' + i + '\')"><video controls><source src="/assets/photos/'+firstName + '/' + filteredPhotos[i].video + '" type="video/mp4">Votre navigateur ne supporte pas les vidéos mp4.</video></a>'
+                        div.innerHTML = '<video onclick="displayPhotoCarousel(\'' + filteredPhotos[i].video + '\', \'' + firstName + '\', \'' + i + '\')"><source src="/assets/photos/'+firstName + '/' + filteredPhotos[i].video + '" type="video/mp4">Votre navigateur ne supporte pas les vidéos mp4.</video>'
                     }
                     //Name
                     const name = document.createElement('h3');
                     name.textContent = filteredPhotos[i].title
+                    div.setAttribute('aria-label', filteredPhotos[i].title)
                     // Number of Likes
                     const nbLikes = document.createElement('p');
                     nbLikes.textContent = filteredPhotos[i].likes;
@@ -251,20 +271,20 @@ async function displayPhotoCarousel(photo, firstname, id) {
     const backCarou = document.getElementById("back");
 
     nextCarou.onclick = function () {
-        nextphotocarousel(id, carouImage, firstname, carouVideo);
+        nextphotocarousel(id, carouImage, carouVideo);
     };
 
     backCarou.onclick = function () {
-        backphotocarousel(id, carouImage, firstname, carouVideo);
+        backphotocarousel(id, carouImage, carouVideo);
     };
 }
 
 let currentId = 0;
 
-function nextphotocarousel(id, carouImage, firstname, carouVideo) {
+function nextphotocarousel(id, carouImage,carouVideo) {
     // Convert 'id' to a number
     id = parseInt(id);
-
+    
     // Check if the requested 'id' is greater than the currentId
     if (id > currentId) {
         // Update the currentId to the requested 'id'
@@ -274,23 +294,33 @@ function nextphotocarousel(id, carouImage, firstname, carouVideo) {
         currentId++;
     }
 
-    console.log(currentId);
-
     // Calculate the next ID
     const nextId = "photo" + currentId;
     const nextimage = document.getElementById(nextId);
-
+    console.log(nextimage)
     if (nextimage) {
         // Get the 'src' attribute value of the 'img' element
-        const imgElement = nextimage.querySelector('img');
-        const imgSrc = imgElement.getAttribute('src');
-
-        // Update the 'src' attribute of the carousel image
-        carouImage.src = imgSrc;
-
-        // Show the image element and hide the video element
-        carouImage.style.display = "block";
-        carouVideo.style.display = "none";
+      
+     
+            const imgElement = nextimage.querySelector('img');
+            if(!imgElement){
+                console.log("1")
+                const videoElement = nextimage.querySelector('video')
+                console.log(videoElement)
+                const videoSrc = videoElement.getAttribute('src');
+                carouVideo.src = videoSrc
+                carouVideo.style.display = "block"
+                carouImage.style.display = "none";
+            }else {
+                const imgSrc = imgElement.getAttribute('src');
+                // Update the 'src' attribute of the carousel image
+                carouImage.src = imgSrc;
+    
+                // Show the image element and hide the video element
+                carouImage.style.display = "block";
+                carouVideo.style.display = "none";
+            }
+        
     } else {
         currentId = 0;
         console.log("No more images found.");
