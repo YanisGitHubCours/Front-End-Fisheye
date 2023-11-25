@@ -7,6 +7,7 @@ function onePhotographerFactory(data) {
         const article = document.createElement( 'article' );
         const img = document.createElement( 'img' );
         img.setAttribute("src", picture)
+        img.setAttribute("alt","one-photo")
 
         const divInfo = document.createElement('div');
         divInfo.setAttribute('class',"divInfo");
@@ -41,7 +42,7 @@ function onePhotographerFactory(data) {
 }
 
 let totalLikes = 0;
-let filteredPhotos = [];
+
 async function DisplayPhotos(){
     const data = await getOnePhotographers()
     const {name} = data.photographer
@@ -53,10 +54,6 @@ async function DisplayPhotos(){
     
     container.innerHTML = '';
     var filteredPhotos = data.photos;
-
-
-    
-    
 
     switch(selectedValue) {
         case 'champ1':
@@ -73,7 +70,7 @@ async function DisplayPhotos(){
                     div.id = 'photo' + i;
                     div.setAttribute('tabindex', i+1);
                     if(filteredPhotos[i].image){
-                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\', \'' + i + '\')"><img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
+                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\', \'' + i + '\')"><img alt="a-photo" src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
                     }else if(filteredPhotos[i].video){
                         div.innerHTML = '<video onclick="displayPhotoCarousel(\'' + filteredPhotos[i].video + '\', \'' + firstName + '\', \'' + i + '\')"><source src="/assets/photos/'+firstName + '/' + filteredPhotos[i].video + '" type="video/mp4">Votre navigateur ne supporte pas les vidéos mp4.</video>'
                     }
@@ -105,9 +102,9 @@ async function DisplayPhotos(){
             });
             TotalLike()
             await filteredPhotos.sort((a, b) => new Date(a.date)- new Date(b.date))
-            for (var i = 0; i < filteredPhotos.length; i++) {
+            for (i = 0; i < filteredPhotos.length; i++) {
             
-                    var div = document.createElement('div');
+                    div = document.createElement('div');
                     div.className = "cardMedia"
                     div.id = 'photo' + i;
                     div.setAttribute('tabindex', i+1);
@@ -125,7 +122,7 @@ async function DisplayPhotos(){
                     nbLikes.textContent = filteredPhotos[i].likes;
                     nbLikes.addEventListener('click', UpOrDownLike(filteredPhotos[i], nbLikes));
                 
-                    var div2 = document.createElement('div');
+                    div2 = document.createElement('div');
                     div2.className = "legendMedia"
                     // Append elements to div
                     div2.appendChild(name)
@@ -152,9 +149,9 @@ async function DisplayPhotos(){
                 }
                 return 0;
             });
-            for (var i = 0; i < filteredPhotos.length; i++) {
+            for (i = 0; i < filteredPhotos.length; i++) {
          
-                    var div = document.createElement('div');
+                    div = document.createElement('div');
                     div.className = "cardMedia"
                     div.id = 'photo' + i;
                     div.setAttribute('tabindex', i+1);
@@ -173,7 +170,7 @@ async function DisplayPhotos(){
                     nbLikes.textContent = filteredPhotos[i].likes;
                     nbLikes.addEventListener('click', UpOrDownLike(filteredPhotos[i], nbLikes));
                 
-                    var div2 = document.createElement('div');
+                    div2 = document.createElement('div');
                     div2.className = "legendMedia"
                     // Append elements to div
                     div2.appendChild(name)
@@ -333,10 +330,10 @@ function backphotocarousel(id, carouImage, firstname, carouVideo) {
 
     // Check if the requested 'id' is greater than the currentId
     if (id > currentId) {
-        // Update the currentId to the requested 'id'
+       
         currentId = id;
     } else {
-        // Increment the currentId to move to the previous image
+        
         currentId--;
     }
 

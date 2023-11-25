@@ -21,12 +21,12 @@ async function displayData(photographers) {
     const userCardDOM = photographerModel.getOneUserCardDOM();
     photographersSection.appendChild(userCardDOM);
 
-};
+}
 
 async function init() {
     // Récupère les datas des photographes
     const photographers = await getOnePhotographers();
     displayData(photographers);
-};
+}
 
 init();
