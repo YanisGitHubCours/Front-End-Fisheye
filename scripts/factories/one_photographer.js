@@ -65,12 +65,13 @@ async function DisplayPhotos(){
             TotalLike()
             await filteredPhotos.sort((a, b) => b.likes - a.likes)
             for (var i = 0; i < filteredPhotos.length; i++) {
+                    let index = i;
                     var div = document.createElement('div');
                     div.className = "cardMedia"
                     div.id = 'photo' + i;
                     div.setAttribute('tabindex', i+1);
                     if(filteredPhotos[i].image){
-                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\', \'' + i + '\')"><img alt="a-photo" src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
+                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\', \'' + i + '\')" ><img alt="'+filteredPhotos[i].title+'-photo" src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
                     }else if(filteredPhotos[i].video){
                         div.innerHTML = '<video onclick="displayPhotoCarousel(\'' + filteredPhotos[i].video + '\', \'' + firstName + '\', \'' + i + '\')"><source src="/assets/photos/'+firstName + '/' + filteredPhotos[i].video + '" type="video/mp4">Votre navigateur ne supporte pas les vidéos mp4.</video>'
                     }
@@ -83,13 +84,17 @@ async function DisplayPhotos(){
                     nbLikes.textContent = filteredPhotos[i].likes;
                     
                     nbLikes.addEventListener('click', UpOrDownLike(filteredPhotos[i], nbLikes, filteredPhotos.length));
-                
+                    div.addEventListener('keydown', (event) => {
+                        // Si la touche "Entrée" est pressée, rediriger vers la page du photographe
+                        if (event.key === 'Enter' && filteredPhotos[index].image) {
+                          displayPhotoCarousel(filteredPhotos[index].image, firstName, index)
+                        }
+                    });
                     var div2 = document.createElement('div');
                     div2.className = "legendMedia"
                     // Append elements to div
                     div2.appendChild(name)
                     div2.appendChild(nbLikes);
-
                     div.appendChild(div2)
                     container.appendChild(div);
                 }
@@ -109,7 +114,7 @@ async function DisplayPhotos(){
                     div.id = 'photo' + i;
                     div.setAttribute('tabindex', i+1);
                     if(filteredPhotos[i].image){
-                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\', \'' + i + '\')"><img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
+                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\', \'' + i + '\')"><img alt="'+filteredPhotos[i].title+'-photo" src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
                     }else if(filteredPhotos[i].video){
                         div.innerHTML = '<video onclick="displayPhotoCarousel(\'' + filteredPhotos[i].video + '\', \'' + firstName + '\', \'' + i + '\')"><source src="/assets/photos/'+firstName + '/' + filteredPhotos[i].video + '" type="video/mp4">Votre navigateur ne supporte pas les vidéos mp4.</video>'
                     }
@@ -156,7 +161,7 @@ async function DisplayPhotos(){
                     div.id = 'photo' + i;
                     div.setAttribute('tabindex', i+1);
                     if(filteredPhotos[i].image){
-                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\',\'' + i + '\')"><img src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
+                        div.innerHTML = '<a onclick="displayPhotoCarousel(\'' + filteredPhotos[i].image + '\', \'' + firstName + '\',\'' + i + '\')"><img alt="'+filteredPhotos[i].title+'-photo" src="/assets/photos/'+ firstName + '/' + filteredPhotos[i].image + '"></a>';
 
                     }else if(filteredPhotos[i].video){
                         div.innerHTML = '<video onclick="displayPhotoCarousel(\'' + filteredPhotos[i].video + '\', \'' + firstName + '\', \'' + i + '\')"><source src="/assets/photos/'+firstName + '/' + filteredPhotos[i].video + '" type="video/mp4">Votre navigateur ne supporte pas les vidéos mp4.</video>'
@@ -184,6 +189,12 @@ async function DisplayPhotos(){
             break;
     }
     
+}
+
+function handleKeyPress(event, src, firstName, index) {
+    if (event.key === 'Enter') {
+      displayPhotoCarousel(src, firstName, index);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -266,6 +277,14 @@ async function displayPhotoCarousel(photo, firstname, id) {
     // Next
     const nextCarou = document.getElementById("next");
     const backCarou = document.getElementById("back");
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight') {
+          nextphotocarousel(id, carouImage, carouVideo);
+        } else if (event.key === 'ArrowLeft') {
+          backphotocarousel(id, carouImage, carouVideo);
+        }
+    });
 
     nextCarou.onclick = function () {
         nextphotocarousel(id, carouImage, carouVideo);
