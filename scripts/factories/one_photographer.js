@@ -254,9 +254,13 @@ async function TotalLike(){
 }
 
 async function displayPhotoCarousel(photo, firstname, id) {
-    console.log("displayPhotoCarousel called with photo:", photo);
     const carouClose = document.getElementById("closeCarrousel");
     carouClose.onclick = CloseCaroussel;
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Escape") {
+            CloseCaroussel();
+        }
+    });
 
     const carou = document.getElementById("carousel");
     const carouImage = document.getElementById("carousel-item");
